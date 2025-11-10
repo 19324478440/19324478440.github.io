@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人博客 | 分享技术与生活</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6a11cb;
+            --text-color: #333;
+            --text-light: #666;
+            --bg-color: #fff;
+            --bg-light: #f9f9f9;
+            --border-color: #eee;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: var(--bg-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            display: flex;
+            margin: 40px 0;
+            gap: 30px;
+        }
+        
+        /* 文章列表样式 */
+        .posts {
+            flex: 2;
+        }
+        
+        .post {
+            background: var(--bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .post:hover {
+            transform: translateY(-5px);
+        }
+        
+        .post-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .post-content {
+            padding: 25px;
+        }
+        
+        .post-meta {
+            display: flex;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .post-meta span {
+            margin-right: 15px;
+        }
+        
+        .post-meta i {
+            margin-right: 5px;
+        }
+        
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .post-title a {
+            color: var(--text-color);
+        }
+        
+        .post-title a:hover {
+            color: var(--primary-color);
+        }
+        
+        .post-excerpt {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .tag {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            flex: 1;
+        }
+        
+        .sidebar-widget {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .widget-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+        
+        .widget-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        /* 关于我样式 */
+        .about-me {
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .about-text {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* 分类样式 */
+        .categories-list {
+            list-style: none;
+        }
+        
+        .categories-list li {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .categories-list li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .categories-list a {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+        }
+        
+        .categories-list a:hover {
+            color: var(--primary-color);
+        }
+        
+        .category-count {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        
+        /* 标签云样式 */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tag-cloud .tag {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .tag-cloud .tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* 最新文章样式 */
+        .recent-posts {
+            list-style: none;
+        }
+        
+        .recent-post {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .recent-post:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .recent-post-image {
+            width: 80px;
+            height: 60px;
+            border-radius: 5px;
+            background-color: var(--bg-light);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .recent-post-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .recent-post-title a {
+            color: var(--text-color);
+        }
+        
+        .recent-post-title a:hover {
+            color: var(--primary-color);
+        }
+        
+        .recent-post-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-color);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">我的博客</a>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">首页</a></li>
+                    <li><a href="#">技术</a></li>
+                    <li><a href="#">生活</a></li>
+                    <li><a href="#">旅行</a></li>
+                    <li><a href="#">摄影</a></li>
+                    <li><a href="#">关于我</a></li>
+                </ul>
+                <div class="menu-toggle">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <div class="main-content">
+            <!-- 文章列表 -->
+            <div class="posts">
+                <!-- 文章1 -->
+                <article class="post">
+                    <div class="post-image">
+                        <span>前端开发</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span><i>📅</i> 2023-10-15</span>
+                            <span><i>👁️</i> 256</span>
+                            <span><i>💬</i> 12</span>
+                        </div>
+                        <h2 class="post-title"><a href="#">深入理解JavaScript闭包及其应用场景</a></h2>
+                        <p class="post-excerpt">闭包是JavaScript中一个非常重要的概念，理解闭包对于编写高质量的JavaScript代码至关重要。本文将深入探讨闭包的工作原理、常见应用场景以及性能考量。</p>
+                        <a href="#" class="btn">阅读更多</a>
+                        <div class="post-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">前端</span>
+                            <span class="tag">编程</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 文章2 -->
+                <article class="post">
+                    <div class="post-image">
+                        <span>旅行日记</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span><i>📅</i> 2023-10-10</span>
+                            <span><i>👁️</i> 189</span>
+                            <span><i>💬</i> 8</span>
+                        </div>
+                        <h2 class="post-title"><a href="#">云南大理：苍山洱海间的风花雪月</a></h2>
+                        <p class="post-excerpt">大理是一座充满浪漫气息的城市，苍山洱海的美景令人流连忘返。在这里，我感受到了慢生活的魅力，也记录下了许多美好的瞬间。</p>
+                        <a href="#" class="btn">阅读更多</a>
+                        <div class="post-tags">
+                            <span class="tag">旅行</span>
+                            <span class="tag">云南</span>
+                            <span class="tag">摄影</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 文章3 -->
+                <article class="post">
+                    <div class="post-image">
+                        <span>技术分享</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span><i>📅</i> 2023-10-05</span>
+                            <span><i>👁️</i> 312</span>
+                            <span><i>💬</i> 15</span>
+                        </div>
+                        <h2 class="post-title"><a href="#">CSS Grid布局完全指南：从入门到实战</a></h2>
+                        <p class="post-excerpt">CSS Grid布局是现代Web开发中强大的布局工具，它提供了二维布局的能力。本文将详细介绍Grid布局的基本概念、属性用法以及实际应用案例。</p>
+                        <a href="#" class="btn">阅读更多</a>
+                        <div class="post-tags">
+                            <span class="tag">CSS</span>
+                            <span class="tag">前端</span>
+                            <span class="tag">布局</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- 侧边栏 -->
+            <aside class="sidebar">
+                <!-- 关于我 -->
+                <div class="sidebar-widget about-me">
+                    <h3 class="widget-title">关于我</h3>
+                    <div class="avatar">👨‍💻</div>
+                    <h4>张三</h4>
+                    <p class="about-text">前端开发工程师，热爱编程、摄影和旅行。在这里分享我的技术心得和生活感悟。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📱</a>
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">📸</a>
+                        <a href="#" class="social-link">💼</a>
+                    </div>
+                </div>
+
+                <!-- 分类 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">文章分类</h3>
+                    <ul class="categories-list">
+                        <li><a href="#">前端开发 <span class="category-count">15</span></a></li>
+                        <li><a href="#">编程语言 <span class="category-count">8</span></a></li>
+                        <li><a href="#">旅行日记 <span class="category-count">12</span></a></li>
+                        <li><a href="#">摄影技巧 <span class="category-count">6</span></a></li>
+                        <li><a href="#">生活随笔 <span class="category-count">10</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- 标签云 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">标签云</h3>
+                    <div class="tag-cloud">
+                        <a href="#" class="tag">JavaScript</a>
+                        <a href="#" class="tag">CSS</a>
+                        <a href="#" class="tag">HTML</a>
+                        <a href="#" class="tag">React</a>
+                        <a href="#" class="tag">Vue</a>
+                        <a href="#" class="tag">Node.js</a>
+                        <a href="#" class="tag">旅行</a>
+                        <a href="#" class="tag">摄影</a>
+                        <a href="#" class="tag">美食</a>
+                    </div>
+                </div>
+
+                <!-- 最新文章 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">最新文章</h3>
+                    <ul class="recent-posts">
+                        <li class="recent-post">
+                            <div class="recent-post-image"></div>
+                            <div>
+                                <h4 class="recent-post-title"><a href="#">Vue 3.0 Composition API 使用指南</a></h4>
+                                <div class="recent-post-date">2023-10-12</div>
+                            </div>
+                        </li>
+                        <li class="recent-post">
+                            <div class="recent-post-image"></div>
+                            <div>
+                                <h4 class="recent-post-title"><a href="#">如何拍出令人惊艳的星空照片</a></h4>
+                                <div class="recent-post-date">2023-10-08</div>
+                            </div>
+                        </li>
+                        <li class="recent-post">
+                            <div class="recent-post-image"></div>
+                            <div>
+                                <h4 class="recent-post-title"><a href="#">Python数据分析入门实战</a></h4>
+                                <div class="recent-post-date">2023-10-03</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>关于博客</h3>
+                    <p>这是我的个人博客，分享技术经验和生活感悟。感谢您的访问！</p>
+                </div>
+                <div class="footer-column">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">关于我</a></li>
+                        <li><a href="#">技术文章</a></li>
+                        <li><a href="#">生活随笔</a></li>
+                        <li><a href="#">联系我</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我</h3>
+                    <ul class="footer-links">
+                        <li>邮箱: hello@example.com</li>
+                        <li>微信: example_wechat</li>
+                        <li>地址: 北京市朝阳区</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 我的个人博客. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // 文章卡片点击效果
+        document.querySelectorAll('.post').forEach(post => {
+            post.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'A' || !e.target.classList.contains('btn')) {
+                    window.location.href = this.querySelector('.post-title a').href;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
